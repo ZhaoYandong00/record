@@ -5,8 +5,8 @@
 <title>产品详细信息</title>
 </head>
 <body>
-	<form th:action="@{/record/detail}" th:method="post"
-		th:object="${production}">
+	<form id="productionForm" th:action="@{/record/detail}"
+		th:method="post" th:object="${production}">
 		<input type="hidden" name="id" th:field="*{id}"></input>
 		<table>
 			<tr th:if="${msg != null}">
@@ -35,8 +35,8 @@
 					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
 				<td><input type="text" name="productionDate"
 					id="productionDate" th:field="*{productionDate}"
-					required="required"
-					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"
+					required="required"></input></td>
 			</tr>
 			<tr>
 				<th>检验人员</th>
@@ -52,6 +52,7 @@
 					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
 				<td><input type="text" name="salesman" th:field="*{salesman}"></input></td>
 				<td><input type="text" name="saleDate" id="saleDate"
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"
 					th:field="*{saleDate}"></input></td>
 				<td><input type="text" name="purchaser" th:field="*{purchaser}"></input></td>
 			</tr>

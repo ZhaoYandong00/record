@@ -6,17 +6,27 @@
 </head>
 <body>
 	<table>
+	<tr>
+			<th colspan="7">记录管理</th>
+		</tr>
 		<tr>
 			<th>产品名字</th>
 			<th>产品型号</th>
 			<th>产品编号</th>
-			<th>销售人员</th>
+			<th>生产人员</th>
+			<th>生产日期</th>
+			<th>检验人员</th>
+			<th>操作[<a th:href="@{/record/detail}">新增</a>]</th>
 		</tr>
 		<tr th:each="prod:${productions}">
-			<td th:text="${prod.name}"/>
-			<td th:text="${prod.specification}"/>
-			<td th:text="${prod.productNumber}"/>
-			<td th:text="${prod.salesman}"/>
+			<td th:text="${prod.name}" />
+			<td th:text="${prod.specification}" />
+			<td th:text="${prod.productNumber}" />
+			<td th:text="${prod.producer}" />
+			<td th:text="${prod.productionDate}"/>
+			<td th:text="${prod.inspector}"/>
+			<td>[<a th:href="@{/record/detail?id={id}(id=${prod.id})}">编辑</a>] [<a th:href="@{/record/delete}">删除</a>]
+				</td>
 		</tr>
 	</table>
 </body>

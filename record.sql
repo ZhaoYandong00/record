@@ -1,3 +1,4 @@
+drop table production;
 CREATE TABLE production (
     id              INTEGER       PRIMARY KEY AUTOINCREMENT
                                   NOT NULL
