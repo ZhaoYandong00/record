@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-/mybatis.org//DTD Mapper 3.0//EN"
+            "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zl.record.mapper.ProductionMapper">
+	<resultMap type="Production" id="productionMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="specification" column="specification" />
+		<result property="productNumber" column="product_number" />
+		<result property="producer" column="producer" />
+		<result property="productionDate" column="production_date"
+			jdbcType="DATE" />
+		<result property="inspector" column="inspector" />
+		<result property="salesman" column="salesman" />
+		<result property="saleDate" column="sale_date" javaType="DATE" />
+		<result property="purchaser" column="purchaser" />
+		<result property="salePosition" column="sale_position" />
+		<result property="remark" column="remark" />
+	</resultMap>
+	<select id="selectAll" resultMap="productionMap">
+		select * from production
+	</select>
+	<select id="selectById" resultMap="productionMap">
+		select * from production where
+		id=#{id}
+	</select>
+	<select id="selectListByProduction" resultMap="productionMap">
+		select * from production where 1=1
+		<choose>
+			<when test="name != null and name != ''">
+				<bind name="nameLike" value="'%'+name+'%'" />
+				and name like #{nameLike}
+			</when>
+			<when test="specification != null and specification != ''">
+				<bind name="specificationLike" value="'%'+specification+'%'" />
+				and specification like #{specificationLike}
+			</when>
+			<when test="productNumber != null and productNumber != ''">
+				<bind name="productNumberLike" value="'%'+productNumber+'%'" />
+				and product_number like #{productNumberLike}
+			</when>
+			<when test="producer != null and producer != ''">
+				<bind name="producerLike" value="'%'+producer+'%'" />
+				and producer like #{producerLike}
+			</when>
+			<when test="productionDate != null and productionDate != ''">
+				and production_date &gt;=
+				#{productionDate,jdbcType=DATE}
+			</when>
+			<when test="endProductionDate != null and endProductionDate != ''">
+				and production_date &lt;=
+				#{endProductionDate,jdbcType=DATE}
+			</when>
+			<when test="inspector != null and inspector != ''">
+				<bind name="inspectorLike" value="'%'+inspector+'%'" />
+				and inspector like #{inspectorLike}
+			</when>
+			<when test="salesman !=null and salesman != ''">
+				<bind name="salesmanLike" value="'%'+salesman+'%'" />
+				and salesman like #{salesmanLike}
+			</when>
+			<when test="saleDate != null and saleDate != ''">
+				and sale_date &gt;= #{saleDate,jdbcType=DATE}
+			</when>
+			<when test="endSaleDate != null and endSaleDate != ''">
+				and sale_date &lt;= #{endSaleDate,jdbcType=DATE}
+			</when>
+			<when test="purchaser != null and purchaser != ''">
+				<bind name="purchaserLike" value="'%'+purchaser+'%'" />
+				and purchaser like #{purchaserLike}
+			</when>
+			<otherwise>
+				and 1=2
+			</otherwise>
+		</choose>
+	</select>
+	<select id="selectListByColumnName" resultType="String">
+		select distinct
+		${columnName} from production
+	</select>
+	<select id="selectProductionByProductNumber" resultMap="productionMap">
+		select *
+		from production where product_number = #{productNumber}
+		<if test="id != null and id != 0L">
+			and id != #{id}
+		</if>
+	</select>
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		production(name,specification,product_number,producer,production_date,
+		inspector,salesman,sale_date,purchaser,sale_position,remark)
+		values(#{name},#{specification},#{productNumber},#{producer},
+		#{productionDate,jdbcType=DATE},#{inspector}
+		<choose>
+			<when test="salesman !=null and salesman != ''">
+				,#{salesman}
+			</when>
+			<otherwise>
+				,null
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="saleDate != null and saleDate != ''">
+				,#{saleDate,jdbcType=DATE}
+			</when>
+			<otherwise>
+				,null
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="purchaser != null and purchaser != ''">
+				,#{purchaser}
+			</when>
+			<otherwise>
+				,null
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="salePosition != null and salePosition != ''">
+				,#{salePosition}
+			</when>
+			<otherwise>
+				,null
+			</otherwise>
+		</choose>
+		<choose>
+			<when test="remark != null and remark != ''">
+				,#{remark}
+			</when>
+			<otherwise>
+				,null
+			</otherwise>
+		</choose>
+		)
+	</insert>
+	<update id="update">
+		update production
+		<set>
+			name=#{name},specification=#{specification},product_number=#{productNumber},producer=#{producer},
+			production_date=#{productionDate,jdbcType=DATE},inspector=#{inspector}
+			<choose>
+				<when test="salesman !=null and salesman != ''">
+					,salesman=#{salesman}
+				</when>
+				<otherwise>
+					,salesman=null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="saleDate != null and saleDate != ''">
+					,sale_date=#{saleDate,jdbcType=DATE}
+				</when>
+				<otherwise>
+					,sale_date=null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="purchaser != null and purchaser != ''">
+					,purchaser=#{purchaser}
+				</when>
+				<otherwise>
+					,purchaser=null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="salePosition != null and salePosition != ''">
+					,sale_position=#{salePosition}
+				</when>
+				<otherwise>
+					,sale_position=null
+				</otherwise>
+			</choose>
+			<choose>
+				<when test="remark != null and remark != ''">
+					,remark=#{remark}
+				</when>
+				<otherwise>
+					,remark=null
+				</otherwise>
+			</choose>
+		</set>
+		where id=#{id}
+	</update>
+	<delete id="delete">
+		delete from production where id=#{id}
+	</delete>
+</mapper>

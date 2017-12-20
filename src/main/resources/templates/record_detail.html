@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>产品详细信息</title>
+</head>
+<body>
+	<form th:action="@{/record/detail}" th:method="post"
+		th:object="${production}">
+		<input type="hidden" name="id" th:field="*{id}"></input>
+		<table>
+			<tr th:if="${msg != null}">
+				<th colspan="2" style="color: red; max-width: 400px;"
+					th:text="${msg}"></th>
+			</tr>
+			<tr>
+				<th>产品名字</th>
+				<th>产品型号</th>
+				<th>产品编号</th>
+				<th>生产人员</th>
+				<th>生产日期</th>
+			</tr>
+			<tr>
+				<td><input type="text" name="name" th:field="*{name}"
+					required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+				<td><input type="text" name="specification"
+					th:field="*{specification}" required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+				<td><input type="text" name="productNumber"
+					th:field="*{productNumber}" required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+				<td><input type="text" name="producer" th:field="*{producer}"
+					required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+				<td><input type="text" name="productionDate"
+					id="productionDate" th:field="*{productionDate}"
+					required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+			</tr>
+			<tr>
+				<th>检验人员</th>
+				<th>销售人员</th>
+				<th>销售日期</th>
+				<th>购方名字</th>
+				<td><input type="date"
+					oninput="productionDate.value=this.value"></input></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="inspector" th:field="*{inspector}"
+					required="required"
+					oninput="this.value=this.value.replace(/\s+/g,'')"></input></td>
+				<td><input type="text" name="salesman" th:field="*{salesman}"></input></td>
+				<td><input type="text" name="saleDate" id="saleDate"
+					th:field="*{saleDate}"></input></td>
+				<td><input type="text" name="purchaser" th:field="*{purchaser}"></input></td>
+			</tr>
+			<tr>
+				<th>装机位置</th>
+				<th>备注</th>
+				<td><input type="date" oninput="saleDate.value=this.value"></input></td>
+			</tr>
+			<tr>
+				<td><textarea rows="5" name="salePosition"
+						th:field="*{salePosition}"></textarea></td>
+				<td><textarea rows="5" name="remark" th:field="*{remark}"></textarea></td>
+			</tr>
+			<tr>
+				<th><input type="submit" value="保存"></input></th>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

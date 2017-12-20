@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>查找记录</title>   
+</head>
+<body>
+<table>
+		<tr>
+			<th>产品名字</th>
+			<th>产品型号</th>
+			<th>产品编号</th>
+			<th>销售人员</th>
+		</tr>
+		<tr th:object="${production}">
+			<td th:text="*{name}"/>
+			<td th:text="*{specification}"/>
+			<td th:text="*{productNumber}"/>
+			<td th:text="*{salesman}"/>
+		</tr>
+	</table>
+</body>
+</html>
