@@ -50,4 +50,9 @@ public class ProductionServiceImpl implements ProductionService {
 		return productionMapper.selectAll();
 	}
 
+	@Override
+	public List<String> findAutoList(String columnName) {
+		return productionMapper.selectListByColumnName(columnName);
+	}
+
 }

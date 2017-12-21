@@ -45,4 +45,12 @@ public interface ProductionService {
 	 * @return
 	 */
 	Production findById(Long id);
+
+	/**
+	 * 查找自动完成列表
+	 * 
+	 * @param columnName
+	 * @return
+	 */
+	List<String> findAutoList(String columnName);
 }

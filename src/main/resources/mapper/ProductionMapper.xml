@@ -12,7 +12,7 @@
 			jdbcType="DATE" />
 		<result property="inspector" column="inspector" />
 		<result property="salesman" column="salesman" />
-		<result property="saleDate" column="sale_date" javaType="DATE" />
+		<result property="saleDate" column="sale_date" jdbcType="DATE" />
 		<result property="purchaser" column="purchaser" />
 		<result property="salePosition" column="sale_position" />
 		<result property="remark" column="remark" />

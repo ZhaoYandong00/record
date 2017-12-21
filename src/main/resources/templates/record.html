@@ -3,10 +3,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>产品记录</title>
+<script src="/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<table>
-	<tr>
+		<tr>
 			<th colspan="7">记录管理</th>
 		</tr>
 		<tr>
@@ -16,18 +17,44 @@
 			<th>生产人员</th>
 			<th>生产日期</th>
 			<th>检验人员</th>
-			<th>操作[<a th:href="@{/record/detail}">新增</a>]</th>
+			<th>操作[<a th:href="@{/record/detail}">新增</a>][[<a th:href="@{/record/search}">查询</a>]
+			</th>
 		</tr>
-		<tr th:each="prod:${productions}">
-			<td th:text="${prod.name}" />
+		<tr th:each="prod:${productions}" th:id="'prod-'+${prod.id}">
+			<td th:text="${prod.name}"/>
 			<td th:text="${prod.specification}" />
 			<td th:text="${prod.productNumber}" />
 			<td th:text="${prod.producer}" />
-			<td th:text="${prod.productionDate}"/>
-			<td th:text="${prod.inspector}"/>
-			<td>[<a th:href="@{/record/detail?id={id}(id=${prod.id})}">编辑</a>] [<a th:href="@{/record/delete}">删除</a>]
-				</td>
+			<td th:text="${prod.productionDate}" />
+			<td th:text="${prod.inspector}" />
+			<td>[<a th:href="@{/record/detail?id={id}(id=${prod.id})}">编辑</a>]
+				[<a href="javascript:;" th:id="${prod.id}"
+				th:name="${prod.productNumber}" onclick="deleteById(this)">删除</a>]
+			</td>
 		</tr>
 	</table>
+	<script>
+		function deleteById(obj) {
+			//弹窗询问
+			var r = confirm('确定删除' + $(obj).attr("name")+ '吗？');
+			if (r) {
+				$.ajax({
+					url : '/record/delete',
+					data : {
+						id : $(obj).attr("id")
+					},
+					dataType : 'json',
+					type : 'POST',
+					success : function(data) {
+						if (data.success) {
+							$('#prod-'+$(obj).attr("id")).remove();
+						} else {
+							alert(data.msg);
+						}
+					}
+				})
+			}
+		}
+	</script>
 </body>
 </html>

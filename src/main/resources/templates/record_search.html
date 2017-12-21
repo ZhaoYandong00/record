@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>查找记录</title>
+</head>
+<body>
+	<form id="productionSerchForm" th:action="@{/record/search}"
+		th:method="post" th:object="${production}">
+		<table>
+			<tr>
+				<th colspan="7">查询</th>
+			</tr>
+			<tr>
+				<th>产品名字</th>
+				<th>产品型号</th>
+				<th>产品编号</th>
+				<th>生产人员</th>
+				<th>生产日期:<input type="date"
+					oninput="productionDate.value=this.value"></input></th>
+				<th></th>
+				<th>终止日期:<input type="date"
+					oninput="endProductionDate.value=this.value"></input></th>
+			</tr>
+			<tr>
+				<td><input type="text" name="name" th:field="*{name}"></input></td>
+				<td><input type="text" name="specification"
+					th:field="*{specification}"></input></td>
+				<td><input type="text" name="productNumber"
+					th:field="*{productNumber}"></input></td>
+				<td><input type="text" name="producer" th:field="*{producer}"></input></td>
+				<td><input type="text" name="productionDate"
+					id="productionDate" th:field="*{productionDate}"
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
+				<td>-</td>
+				<td><input type="text" name="endProductionDate"
+					id="endProductionDate" th:field="*{endProductionDate}"
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
+			</tr>
+			<tr>
+				<th>检验人员</th>
+				<th>销售人员</th>
+				<th>购方名字</th>
+				<th></th>
+				<th>销售日期:<input type="date" oninput="saleDate.value=this.value"></input></th>
+				<th></th>
+				<th>终止日期:<input type="date"
+					oninput="endSaleDate.value=this.value"></input></th>
+			</tr>
+			<tr>
+				<td><input type="text" name="inspector" th:field="*{inspector}"></input></td>
+				<td><input type="text" name="salesman" th:field="*{salesman}"></input></td>
+				<td><input type="text" name="purchaser" th:field="*{purchaser}"></input></td>
+				<td></td>
+				<td><input type="text" name="saleDate" id="saleDate"
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"
+					th:field="*{saleDate}"></input></td>
+				<td>-</td>
+				<td><input type="text" name="endSaleDate" id="endSaleDate"
+					th:field="*{endSaleDate}"
+					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
+			</tr>
+			<tr>
+				<th><input type="submit" value="查询"></input></th>
+				<th><input type="button" value="返回" onclick="backToList()"></input></th>
+			</tr>
+		</table>
+	</form>
+	<table>
+		<tr>
+			<th colspan="5">查询结果</th>
+		</tr>
+		<tr th:if="${msg != null}">
+			<th style="color: red; max-width: 400px;" th:text="${msg}"
+				colspan="5"></th>
+		</tr>
+		<tr>
+			<th>产品名字</th>
+			<th>产品型号</th>
+			<th>产品编号</th>
+			<th>生产人员</th>
+			<th>生产日期</th>
+		</tr>
+		<tr th:each="prod:${productions}" th:id="'prod-'+${prod.id}">
+			<td th:text="${prod.name}" />
+			<td th:text="${prod.specification}" />
+			<td th:text="${prod.productNumber}" />
+			<td th:text="${prod.producer}" />
+			<td th:text="${prod.productionDate}" />
+			<td th:text="${prod.inspector}" />
+			<td>[<a th:href="@{/record/detail?id={id}(id=${prod.id})}">详细信息</a>]
+			</td>
+		</tr>
+	</table>
+	<script>
+		function backToList() {
+			location.href = '/';
+		}
+	</script>
+</body>
+</html>

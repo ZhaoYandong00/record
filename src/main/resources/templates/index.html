@@ -2,9 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>hello</title>
+<title>记录管理系统</title>
+<script src="/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-	<p th:text="'Hello , ' + '!'">3333</p>
+	<p><input type="button" value="记录管理" th:href="record" onclick="jump(this)"></input></p>
+	<p><input type="button" value="查询" th:href="'record/search'" onclick="jump(this)"></input></p>
+	<script>
+		function jump(obj) {
+			location.href =$(obj).attr("href");
+		}
+	</script>
 </body>
 </html>
