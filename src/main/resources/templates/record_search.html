@@ -7,6 +7,11 @@
 <body>
 	<form id="productionSerchForm" th:action="@{/record/search}"
 		th:method="post" th:object="${production}">
+		<th:block th:each="attr:${autoListMap}">
+			<datalist th:id="${attr.key}+'List'">
+				<option th:each="lable:${attr.value}" th:value="${lable}" />
+			</datalist>
+		</th:block>
 		<table>
 			<tr>
 				<th colspan="7">查询</th>
@@ -23,18 +28,22 @@
 					oninput="endProductionDate.value=this.value"></input></th>
 			</tr>
 			<tr>
-				<td><input type="text" name="name" th:field="*{name}"></input></td>
+				<td><input type="text" name="name" th:field="*{name}"
+					list="nameList"></input></td>
 				<td><input type="text" name="specification"
-					th:field="*{specification}"></input></td>
+					list="specificationList" th:field="*{specification}"></input></td>
 				<td><input type="text" name="productNumber"
-					th:field="*{productNumber}"></input></td>
-				<td><input type="text" name="producer" th:field="*{producer}"></input></td>
+					list="productNumberList" th:field="*{productNumber}"></input></td>
+				<td><input type="text" name="producer" th:field="*{producer}"
+					list="producerList"></input></td>
 				<td><input type="text" name="productionDate"
 					id="productionDate" th:field="*{productionDate}"
+					th:placeholder="格式：yyyy-MM-dd"
 					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
 				<td>-</td>
 				<td><input type="text" name="endProductionDate"
-					id="endProductionDate" th:field="*{endProductionDate}"
+					th:placeholder="格式：yyyy-MM-dd" id="endProductionDate"
+					th:field="*{endProductionDate}"
 					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
 			</tr>
 			<tr>
@@ -48,21 +57,26 @@
 					oninput="endSaleDate.value=this.value"></input></th>
 			</tr>
 			<tr>
-				<td><input type="text" name="inspector" th:field="*{inspector}"></input></td>
-				<td><input type="text" name="salesman" th:field="*{salesman}"></input></td>
-				<td><input type="text" name="purchaser" th:field="*{purchaser}"></input></td>
+				<td><input type="text" name="inspector" th:field="*{inspector}"
+					list="inspectorList"></input></td>
+				<td><input type="text" name="salesman" th:field="*{salesman}"
+					list="salesmanList"></input></td>
+				<td><input type="text" name="purchaser" th:field="*{purchaser}"
+					list="purchaserList"></input></td>
 				<td></td>
 				<td><input type="text" name="saleDate" id="saleDate"
+					th:placeholder="格式：yyyy-MM-dd"
 					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"
 					th:field="*{saleDate}"></input></td>
 				<td>-</td>
 				<td><input type="text" name="endSaleDate" id="endSaleDate"
-					th:field="*{endSaleDate}"
+					th:field="*{endSaleDate}" th:placeholder="格式：yyyy-MM-dd"
 					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"></input></td>
 			</tr>
 			<tr>
 				<th><input type="submit" value="查询"></input></th>
-				<th><input type="button" value="返回" onclick="backToList()"></input></th>
+				<th><input type="button" value="返回"
+					onclick="javascript:history.back(-1);"></input></th>
 			</tr>
 		</table>
 	</form>
@@ -92,10 +106,5 @@
 			</td>
 		</tr>
 	</table>
-	<script>
-		function backToList() {
-			location.href = '/';
-		}
-	</script>
 </body>
 </html>

@@ -25,54 +25,68 @@
 		id=#{id}
 	</select>
 	<select id="selectListByProduction" resultMap="productionMap">
-		select * from production where 1=1
-		<choose>
-			<when test="name != null and name != ''">
+		select * from production
+		<where>
+			1=1
+			<bind name="status" value="true"/>
+			<if test="name != null and name != ''">
 				<bind name="nameLike" value="'%'+name+'%'" />
 				and name like #{nameLike}
-			</when>
-			<when test="specification != null and specification != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="specification != null and specification != ''">
 				<bind name="specificationLike" value="'%'+specification+'%'" />
 				and specification like #{specificationLike}
-			</when>
-			<when test="productNumber != null and productNumber != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="productNumber != null and productNumber != ''">
 				<bind name="productNumberLike" value="'%'+productNumber+'%'" />
 				and product_number like #{productNumberLike}
-			</when>
-			<when test="producer != null and producer != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="producer != null and producer != ''">
 				<bind name="producerLike" value="'%'+producer+'%'" />
 				and producer like #{producerLike}
-			</when>
-			<when test="productionDate != null and productionDate != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="productionDate != null and productionDate != ''">
 				and production_date &gt;=
 				#{productionDate,jdbcType=DATE}
-			</when>
-			<when test="endProductionDate != null and endProductionDate != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="endProductionDate != null and endProductionDate != ''">
 				and production_date &lt;=
 				#{endProductionDate,jdbcType=DATE}
-			</when>
-			<when test="inspector != null and inspector != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="inspector != null and inspector != ''">
 				<bind name="inspectorLike" value="'%'+inspector+'%'" />
 				and inspector like #{inspectorLike}
-			</when>
-			<when test="salesman !=null and salesman != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="salesman !=null and salesman != ''">
 				<bind name="salesmanLike" value="'%'+salesman+'%'" />
 				and salesman like #{salesmanLike}
-			</when>
-			<when test="saleDate != null and saleDate != ''">
-				and sale_date &gt;= #{saleDate,jdbcType=DATE}
-			</when>
-			<when test="endSaleDate != null and endSaleDate != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="saleDate != null and saleDate != ''">
+				and (sale_date &gt;= #{saleDate,jdbcType=DATE} or
+				sale_date = null)
+				<bind name="status" value="false"/>
+			</if>
+			<if test="endSaleDate != null and endSaleDate != ''">
 				and sale_date &lt;= #{endSaleDate,jdbcType=DATE}
-			</when>
-			<when test="purchaser != null and purchaser != ''">
+				<bind name="status" value="false"/>
+			</if>
+			<if test="purchaser != null and purchaser != ''">
 				<bind name="purchaserLike" value="'%'+purchaser+'%'" />
 				and purchaser like #{purchaserLike}
-			</when>
-			<otherwise>
+				<bind name="status" value="false"/>
+			</if>
+			<if test="status == true">
 				and 1=2
-			</otherwise>
-		</choose>
+			</if>
+		</where>
 	</select>
 	<select id="selectListByColumnName" resultType="String">
 		select distinct

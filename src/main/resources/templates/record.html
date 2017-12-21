@@ -8,7 +8,11 @@
 <body>
 	<table>
 		<tr>
-			<th colspan="7">记录管理</th>
+			<th colspan="7">记录管理<input type="button" value="返回"
+				onclick="javascript:history.back(-1);"></input></th>
+		</tr>
+		<tr th:if="${msg != null}">
+			<th style="color: red; max-width: 400px;" th:text="${msg}"></th>
 		</tr>
 		<tr>
 			<th>产品名字</th>
@@ -17,11 +21,12 @@
 			<th>生产人员</th>
 			<th>生产日期</th>
 			<th>检验人员</th>
-			<th>操作[<a th:href="@{/record/detail}">新增</a>][[<a th:href="@{/record/search}">查询</a>]
+			<th>操作[<a th:href="@{/record/detail}">新增</a>][[<a
+				th:href="@{/record/search}">查询</a>]
 			</th>
 		</tr>
 		<tr th:each="prod:${productions}" th:id="'prod-'+${prod.id}">
-			<td th:text="${prod.name}"/>
+			<td th:text="${prod.name}" />
 			<td th:text="${prod.specification}" />
 			<td th:text="${prod.productNumber}" />
 			<td th:text="${prod.producer}" />
@@ -36,7 +41,7 @@
 	<script>
 		function deleteById(obj) {
 			//弹窗询问
-			var r = confirm('确定删除' + $(obj).attr("name")+ '吗？');
+			var r = confirm('确定删除' + $(obj).attr("name") + '吗？');
 			if (r) {
 				$.ajax({
 					url : '/record/delete',
@@ -47,7 +52,7 @@
 					type : 'POST',
 					success : function(data) {
 						if (data.success) {
-							$('#prod-'+$(obj).attr("id")).remove();
+							$('#prod-' + $(obj).attr("id")).remove();
 						} else {
 							alert(data.msg);
 						}

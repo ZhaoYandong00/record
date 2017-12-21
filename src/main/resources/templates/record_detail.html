@@ -8,9 +8,9 @@
 	<form id="productionForm" th:action="@{/record/detail}"
 		th:method="post" th:object="${production}">
 		<input type="hidden" name="id" th:field="*{id}"></input>
-		<th:block th:each="attr:${attrList}">
-			<datalist th:id="${attr}+'List'">
-				<option th:each="lable:${AutoList}" th:value="${lable}" />
+		<th:block th:each="attr:${autoListMap}">
+			<datalist th:id="${attr.key}+'List'">
+				<option th:each="lable:${attr.value}" th:value="${lable}" />
 			</datalist>
 		</th:block>
 		<table>
@@ -32,17 +32,18 @@
 			</tr>
 			<tr>
 				<td><input type="text" name="name" th:field="*{name}"
-					required="required" th:list="nameList"></input></td>
+					required="required" th:list="nameList" th:placeholder="不能为空"></input></td>
 				<td><input type="text" name="specification"
 					th:field="*{specification}" required="required"
-					list="specificationList"></input></td>
+					list="specificationList" th:placeholder="不能为空"></input></td>
 				<td><input type="text" name="productNumber"
 					list="productNumberList" th:field="*{productNumber}"
-					required="required"></input></td>
+					required="required" th:placeholder="不能为空"></input></td>
 				<td><input type="text" name="producer" th:field="*{producer}"
-					list="producerlist" required="required"></input></td>
+					list="producerList" required="required" th:placeholder="不能为空"></input></td>
 				<td><input type="text" name="productionDate"
 					id="productionDate" th:field="*{productionDate}"
+					th:placeholder="必填，格式：yyyy-MM-dd"
 					pattern="(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)"
 					required="required"></input></td>
 			</tr>
@@ -56,7 +57,7 @@
 			</tr>
 			<tr>
 				<td><input type="text" name="inspector" th:field="*{inspector}"
-					list="inspectorList" required="required"></input></td>
+					th:placeholder="不能为空" list="inspectorList" required="required"></input></td>
 				<td><input type="text" name="salesman" th:field="*{salesman}"
 					list="salesmanList"></input></td>
 				<td><input type="text" name="saleDate" id="saleDate"
@@ -77,14 +78,9 @@
 			</tr>
 			<tr>
 				<th><input type="submit" value="保存"></input></th>
-				<th><input type="button" value="取消" onclick="backToList()"></input></th>
+				<th><input type="button" value="取消" onclick="javascript:history.back(-1);"></input></th>
 			</tr>
 		</table>
 	</form>
-	<script>
-		function backToList() {
-			location.href = '/record/';
-		}
-	</script>
 </body>
 </html>

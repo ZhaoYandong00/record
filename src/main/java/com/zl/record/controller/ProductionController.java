@@ -1,7 +1,9 @@
 package com.zl.record.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,11 @@ public class ProductionController {
 		return mv;
 	}
 
+	/**
+	 * 设置自动填充列表
+	 * 
+	 * @param mv
+	 */
 	private void setAutoList(ModelAndView mv) {
 		List<String> attrList = new ArrayList<String>();
 		attrList.add("name");
@@ -47,21 +54,50 @@ public class ProductionController {
 		attrList.add("inspector");
 		attrList.add("salesman");
 		attrList.add("purchaser");
-		mv.addObject("attrList", attrList);
+		Map<String, List<String>> map = new HashMap<>();
 		for (String columnName : attrList) {
 			List<String> autoList = productionService.findAutoList(columnName);
-			mv.addObject(columnName + "AutoList", autoList);
+			columnName = underlineToCamehump(columnName);
+			map.put(columnName, autoList);
 		}
+		mv.addObject("autoListMap", map);
+	}
+
+	/**
+	 * 将下划线替换为驼峰风格
+	 * 
+	 * @param inputString
+	 * @return
+	 */
+	private String underlineToCamehump(String inputString) {
+		StringBuilder sb = new StringBuilder();
+		boolean nextUpperCase = false;
+		for (int i = 0; i < inputString.length(); i++) {
+			char c = inputString.charAt(i);
+			if (c == '_') {
+				if (sb.length() > 0) {
+					nextUpperCase = true;
+				}
+			} else {
+				if (nextUpperCase) {
+					sb.append(Character.toUpperCase(c));
+					 nextUpperCase = false;
+				} else
+					sb.append(Character.toLowerCase(c));
+			}
+		}
+		return sb.toString();
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ModelAndView productions(Production production, Integer offset, Integer limit) {
 		ModelAndView mv = new ModelAndView("record_search");
-		mv.addObject("production", production);
+		System.out.println(production.getName()+": 你好："+production.getProductNumber());
 		List<Production> list = productionService.findBy(production, offset, limit);
 		if (list == null || list.isEmpty()) {
 			mv.addObject("msg", "未找到数据,请重新查找");
-		}
+		}	
+		mv.addObject("production", production);
 		mv.addObject("productions", list);
 		return mv;
 	}
@@ -74,8 +110,10 @@ public class ProductionController {
 			production = new Production();
 		else {
 			production = productionService.findById(id);
-			if (production == null)
+			if (production == null){
 				mv.setViewName("redirect:/record");
+				mv.addObject("msg", "选择错误");
+			}		
 		}
 		mv.addObject("production", production);
 		setAutoList(mv);
@@ -123,7 +161,7 @@ public class ProductionController {
 			}
 			if (nextStep) {
 				if (productionService.saveOrUpdate(production))
-					mv.setViewName("redirect:/record");
+					mv.setViewName("/record_search");
 				else {
 					mv.setViewName("record_detail");
 					mv.addObject("msg", "检查是否有生产编号重复");
