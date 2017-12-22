@@ -8,8 +8,8 @@
 <body>
 	<table>
 		<tr>
-			<th colspan="7">记录管理<input type="button" value="返回"
-				onclick="javascript:history.back(-1);"></input></th>
+			<th colspan="7">记录管理<input type="button" value="返回" th:href="'/'"
+				onclick="location.href='/'"></input></th>
 		</tr>
 		<tr th:if="${msg != null}">
 			<th style="color: red; max-width: 400px;" th:text="${msg}"></th>

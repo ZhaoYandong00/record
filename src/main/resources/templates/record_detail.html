@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>产品详细信息</title>
+<script src="/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<form id="productionForm" th:action="@{/record/detail}"
@@ -78,9 +79,15 @@
 			</tr>
 			<tr>
 				<th><input type="submit" value="保存"></input></th>
-				<th><input type="button" value="取消" onclick="javascript:history.back(-1);"></input></th>
+				<th><input type="button" value="返回管理" th:href="'/record'" onclick="backToList(this)"></input>
+				<input type="button" value="返回查询" th:href="'search'" onclick="backToList(this)"></input></th>
 			</tr>
 		</table>
 	</form>
+	<script>
+		function backToList(obj) {
+			location.href = $(obj).attr("href");
+		}
+	</script>
 </body>
 </html>

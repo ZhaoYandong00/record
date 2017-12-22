@@ -3,6 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>查找记录</title>
+<script src="/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<form id="productionSerchForm" th:action="@{/record/search}"
@@ -75,11 +76,16 @@
 			</tr>
 			<tr>
 				<th><input type="submit" value="查询"></input></th>
-				<th><input type="button" value="返回"
-					onclick="javascript:history.back(-1);"></input></th>
+				<th><input type="button" value="返回" th:href="'/record'"
+					onclick="backToList(this)"></input></th>
 			</tr>
 		</table>
 	</form>
+	<script>
+		function backToList(obj) {
+			location.href = $(obj).attr("href");
+		}
+	</script>
 	<table>
 		<tr>
 			<th colspan="5">查询结果</th>
@@ -106,5 +112,6 @@
 			</td>
 		</tr>
 	</table>
+	
 </body>
 </html>
