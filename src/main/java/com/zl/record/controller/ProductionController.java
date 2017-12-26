@@ -81,7 +81,7 @@ public class ProductionController {
 			} else {
 				if (nextUpperCase) {
 					sb.append(Character.toUpperCase(c));
-					 nextUpperCase = false;
+					nextUpperCase = false;
 				} else
 					sb.append(Character.toLowerCase(c));
 			}
@@ -92,11 +92,10 @@ public class ProductionController {
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public ModelAndView productions(Production production, Integer offset, Integer limit) {
 		ModelAndView mv = new ModelAndView("record_search");
-		System.out.println(production.getName()+": 你好："+production.getProductNumber());
 		List<Production> list = productionService.findBy(production, offset, limit);
 		if (list == null || list.isEmpty()) {
 			mv.addObject("msg", "未找到数据,请重新查找");
-		}	
+		}
 		mv.addObject("production", production);
 		mv.addObject("productions", list);
 		return mv;
@@ -110,10 +109,10 @@ public class ProductionController {
 			production = new Production();
 		else {
 			production = productionService.findById(id);
-			if (production == null){
+			if (production == null) {
 				mv.setViewName("redirect:/record");
 				mv.addObject("msg", "选择错误");
-			}		
+			}
 		}
 		mv.addObject("production", production);
 		setAutoList(mv);
@@ -198,5 +197,37 @@ public class ProductionController {
 			modelMap.put("success", false);
 		}
 		return modelMap;
+	}
+
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@ResponseBody
+	public String addProductionFromClient(Production production) {
+		String regex = "(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)";
+		String regex1 = "\\s*";
+		try {
+			if (production.getName() == null || production.getName().matches(regex1))
+				return "产品名字不能为空";
+			if (production.getSpecification() == null || production.getSpecification().matches(regex1))
+				return "型号规格不能为空";
+			if (production.getProductNumber() == null || production.getProductNumber().matches(regex1))
+				return "产品编号不能为空";
+			if (production.getProducer() == null || production.getProducer().matches(regex1))
+				return "生产人员不能为空";
+			if (production.getInspector() == null || production.getInspector().matches(regex1))
+				return "检验人员不能为空";
+			if (production.getProductionDate() == null || production.getProductionDate().matches(regex1))
+				return "生产时间不能为空";
+			else if (!production.getProductionDate().matches(regex))
+				return "生产时间格式不对";
+			if (production.getSaleDate() != null && !production.getSaleDate().matches(regex1)
+					&& !production.getSaleDate().matches(regex))
+				return "销售时间格式不对";
+			if (productionService.saveOrUpdate(production))
+				return "成功";
+			else 
+				return "检查是否有生产编号重复";
+		} catch (Exception e) {
+			return e.getMessage();
+		}
 	}
 }
